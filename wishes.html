@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wishes & More</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, #FF1493, #FF69B4);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.3);
+        }
+
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+        }
+
+        .memory-container {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            animation: fadeInSlide 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .memory-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            top: 15px;
+            right: -17px;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .right::after {
+            left: -8px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .memory-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .right {
+                left: 0%;
+            }
+
+            .memory-container::after {
+                left: 15px;
+                right: auto;
+            }
+
+            .memory-content {
+                padding: 15px 20px;
+            }
+
+            .memory-image {
+                height: 150px;
+            }
+        }
+
+        .memory-content {
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+            position: relative;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.2);
+            border: 2px solid rgba(255, 192, 203, 0.3);
+            backdrop-filter: blur(10px);
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .memory-content:hover .memory-image {
+            transform: scale(1.05);
+        }
+
+        .memory-content:hover {
+            transform: scale(1);
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.3);
+        }
+
+        .game-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.2);
+            border: 2px solid rgba(255, 192, 203, 0.3);
+            text-align: center;
+        }
+
+        @media screen and (max-width: 768px) {
+            .game-container {
+                margin: 20px 15px;
+                padding: 20px;
+            }
+
+            h2.text-4xl {
+                font-size: 2rem !important;
+            }
+
+            .next-section-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+                margin: 20px auto;
+            }
+
+            .sparkle-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .game-container {
+                margin: 15px 10px;
+                padding: 15px;
+            }
+
+            h2.text-4xl {
+                font-size: 1.75rem !important;
+            }
+        }
+
+        .love-meter-container {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .love-meter {
+            width: 100%;
+            height: 40px;
+            background: rgba(255, 192, 203, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(255, 20, 147, 0.2);
+            border: 2px solid rgba(255, 20, 147, 0.3);
+        }
+
+        .love-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #FF1493, #FF69B4, #FFB6C1, #FF69B4);
+            background-size: 200% 100%;
+            border-radius: 20px;
+            transition: width 3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: gradientFlow 3s linear infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .love-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .floating-hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .meter-heart {
+            position: absolute;
+            font-size: 12px;
+            animation: floatUp 2s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100%) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100%) scale(1.2); opacity: 0; }
+        }
+
+        .love-percentage {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FF1493;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
+            z-index: 2;
+        }
+
+        .love-message-container {
+            min-height: 120px;
+        }
+
+        .love-caption {
+            animation: fadeInScale 1s ease-out;
+        }
+
+        .love-details {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255, 192, 203, 0.1);
+            animation: fadeInScale 1s ease-out;
+        }
+
+        .love-detail-item {
+            margin: 10px 0;
+            font-size: 1.1rem;
+            color: #FF1493;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .heart-pulse {
+            display: inline-block;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .sparkle-btn {
+            position: relative;
+            overflow: hidden;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+        }
+
+        .sparkle-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            animation: rotateSpark 3s linear infinite;
+        }
+
+        @keyframes rotateSpark {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Final Message Section Styles */
+        .final-message-section {
+            background: linear-gradient(135deg, rgba(255,20,147,0.1), rgba(255,105,180,0.1));
+            border-radius: 30px;
+            margin: 20px;
+        }
+
+
+
+        .final-message {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(255,20,147,0.15);
+            animation: fadeIn 1s ease-out;
+            border: 2px solid rgba(255,192,203,0.3);
+        }
+
+        .message-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .memory-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .memory-list li {
+            margin: 10px 0;
+            color: #FF1493;
+            font-style: italic;
+            animation: fadeInLeft 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .memory-list li:nth-child(2) { animation-delay: 0.2s; }
+        .memory-list li:nth-child(3) { animation-delay: 0.4s; }
+        .memory-list li:nth-child(4) { animation-delay: 0.6s; }
+        .memory-list li:nth-child(5) { animation-delay: 0.8s; }
+
+        .signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #FF1493;
+            margin-top: 30px;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-effect {
+            animation: glowPulse 2s infinite;
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 20px rgba(255,20,147,0.3); }
+            50% { box-shadow: 0 0 40px rgba(255,20,147,0.5); }
+            100% { box-shadow: 0 0 20px rgba(255,20,147,0.3); }
+        }
+
+        /* Mobile Responsiveness for Final Message */
+        @media screen and (max-width: 768px) {
+            .collage-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .collage-image {
+                height: 250px;
+            }
+
+            .final-message {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .message-content {
+                font-size: 1rem;
+            }
+
+            .signature {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .final-message-section {
+                margin: 10px;
+            }
+
+            .collage-image {
+                height: 200px;
+            }
+
+            .memory-list {
+                padding-left: 15px;
+            }
+        }
+
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes imageZoom {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.05);
+            }
+        }
+
+        .memory-image {
+            animation: imageZoom 2s infinite alternate ease-in-out;
+            cursor: pointer;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        @media screen and (max-width: 768px) {
+            .modal-content {
+                max-width: 95%;
+                margin: 10px;
+            }
+
+            .modal-image {
+                max-height: 80vh;
+            }
+
+            .modal-caption {
+                font-size: 1rem;
+                bottom: -30px;
+            }
+
+            .close-modal {
+                top: -35px;
+                right: -5px;
+                font-size: 1.8rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .modal-content {
+                max-width: 98%;
+                margin: 5px;
+            }
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.1);
+            color: #FF69B4;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .sparkle-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF69B4);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
+        }
+
+        .sparkle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        .next-section-btn {
+            background: linear-gradient(45deg, #FFD700, #FF1493);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            margin: 40px auto;
+            display: block;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 20, 147, 0.2);
+        }
+
+        .next-section-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 20, 147, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-400 via-purple-400 to-pink-400">
+    <!-- Timeline Section -->
+    <section class="py-16">
+        <h2 class="text-4xl font-dancing text-center mb-12 text-white font-bold">Our Beautiful Journey 💖</h2>
+        <div class="timeline">
+            <div class="memory-container left">
+                <div class="memory-content">
+                    <img src="pic1.jpg" alt="First Meeting" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our school / college days ✨</h3>
+                    <p class="text-gray-700">Our school and college days were the best chapters of life — filled with laughter, friendships, and unforgettable memories. Those days taught us lessons beyond books and gave us bonds that still bring a smile today.... 💕</p>
+                    <!-- <p class="text-sm text-pink-500 mt-2">January 15, 2024</p> -->
+                </div>
+            </div>
+            <div class="memory-container right">
+                <div class="memory-content">
+                    <img src="pic2.jpg" alt="First Date" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our First Trip 🌈</h3>
+                    <p class="text-gray-700">Our first trip to Jaipur was truly unforgettable — exploring the royal palaces, colorful streets, and rich culture made every moment special. The laughter, late-night talks, and shared memories made it a trip to remember forever.... ✨</p>
+                    <!-- <p class="text-sm text-pink-500 mt-2">February 14, 2024</p> -->
+                </div>
+            </div>
+            <div class="memory-container left">
+                <div class="memory-content">
+                    <img src="pic3.jpg" alt="Special Moments" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our First Date 🌹</h3>
+                    <p class="text-gray-700">We went on our first date to <b>Spezia Bistro</b>, and it turned out to be unforgettable. We laughed, talked for hours, and made lots of beautiful memories that still make us smile today.
+... �</p>
+                </div>
+            </div>
+            <div class="memory-container right">
+                <div class="memory-content">
+                    <img src="pic4.jpg" alt="Together" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our Second Trip 💝</h3>
+                    <p class="text-gray-700">Our second trip to <b>Harsil</b> with friends was truly unforgettable. The bike ride with you, surrounded by the most beautiful views, was my favorite part — you sitting on the back seat, feeling the wind, and enjoying every moment made it truly special.
+... 💫</p>
+                </div>
+            </div>
+            <div class="memory-container left">
+                <div class="memory-content">
+                    <img src="pic5.jpg" alt="Romantic Evening" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our Third Trip🌙</h3>
+                    <p class="text-gray-700">Our third trip was to <b>Kerala</b>, and it was our first time flying together — such a memorable experience! You were sitting just behind me on the flight, and we had so much fun. We explored, laughed, and created countless beautiful memories together.
+... ✨</p>
+                </div>
+            </div>
+            <div class="memory-container right">
+                <div class="memory-content">
+                    <img src="pic6.jpg" alt="Beach Day" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Lovely Picture</h3>
+                    <p class="text-gray-700">The way you’re looking in this picture — I absolutely love it.... </p>
+                </div>
+            </div>
+            <div class="memory-container left">
+                <div class="memory-content">
+                    <img src="pic7.jpg" alt="Cozy Evening" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Cozy Moments ☕</h3>
+                    <p class="text-gray-700">Found another random photo — the way you have the flower tucked behind your ear, you’re looking absolutely beautiful. 🌸
+🫂</p>
+                </div>
+            </div>
+            <div class="memory-container right">
+                <div class="memory-content">
+                    <img src="pic8.jpg" alt="Festival Fun" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our First Family Trip ✨</h3>
+                    <p class="text-gray-700">Our first family trip was to <b>Jaisalmer</b>, and we absolutely loved it. I never imagined our first trip would feel so special, especially sharing those moments with you — it made everything unforgettable.
+... 🎆</p>
+                </div>
+            </div>
+            <div class="memory-container left">
+                <div class="memory-content">
+                    <img src="pic9.jpg" alt="Special Celebration" class="memory-image">
+                    <h3 class="text-xl font-bold text-pink-600 mb-2">Our lovely moment💫</h3>
+                    <p class="text-gray-700">Found another candy photo — your laugh in it is just adorable, I absolutely loved it! 🍬❤️
+... 💝</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Final Message Section -->
+    <section class="py-16 final-message-section">
+        
+        <div class="final-message">
+            <div class="message-content">
+                <p class="mb-4">My Love,</p>
+                <p class="mb-4">These photos are just glimpses of our journey - mere snapshots of the countless precious moments we've shared. But our real story lives in the small moments:</p>
+                <ul class="memory-list">
+                    <li>The way you smile when you're truly happy</li>
+                    <li>Your laughter that makes my world brighter</li>
+                </ul>
+                <p class="mb-4">Each day with you adds a new chapter to our beautiful story. Some moments are captured in photos, but the most precious ones are written in our hearts - the gentle touches, the knowing glances, the comfortable silences, and the endless love we share.</p>
+                <p class="mb-4">On your birthday, I want you to know that every second spent with you is a gift I cherish. Our story is my favorite story, and it keeps getting better with each passing day.</p>
+                <p class="signature">Forever Yours,<br>With All My Love to you babe💕</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Birthday Love Game Section -->
+    <section class="py-16">
+        <div class="game-container">
+            <h2 class="text-3xl font-dancing text-pink-600 mb-6">Measuring My Love For You 💝</h2>
+            <p class="text-gray-700 mb-4 font-dancing text-xl">Let me show you how much I love you...</p>
+            <div class="love-meter-container">
+                <div class="love-meter">
+                    <div class="love-fill" id="loveFill">
+                        <div class="floating-hearts-container"></div>
+                    </div>
+                </div>
+                <div class="love-percentage" id="lovePercentage">0%</div>
+            </div>
+            <button class="sparkle-btn mt-6" onclick="fillLoveMeter()" id="loveButton">
+                <span class="btn-text">Measure My Love 💖</span>
+                <span class="heart-pulse">💗</span>
+            </button>
+            <div class="love-message-container">
+                <p class="text-pink-600 mt-6 font-dancing text-2xl hidden love-caption" id="loveMessage"></p>
+                <div class="love-details hidden" id="loveDetails"></div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Navigation Button -->
+    <button class="next-section-btn glow-effect" onclick="window.location.href='cake.html'">
+        Continue to Your Birthday Cake! 🎂
+    </button>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <img src="" alt="" class="modal-image" id="modalImage">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Timeline animation
+        function animateTimeline() {
+            const containers = document.querySelectorAll('.memory-container');
+            containers.forEach((container, index) => {
+                setTimeout(() => {
+                    container.style.animation = 'fadeInSlide 0.5s ease-out forwards';
+                }, index * 300);
+            });
+        }
+
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        // Add click event listeners to all memory images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.memory-image');
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    openModal(this.src, this.alt);
+                });
+            });
+        });
+
+        function openModal(imageSrc, caption) {
+            modalImage.src = imageSrc;
+            modalCaption.textContent = caption;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling while modal is open
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Close modal when clicking outside the image
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                closeModal();
+            }
+        });
+
+        // Love Meter Game
+        function fillLoveMeter() {
+            const fill = document.getElementById('loveFill');
+            const message = document.getElementById('loveMessage');
+            const details = document.getElementById('loveDetails');
+            const percentage = document.getElementById('lovePercentage');
+            const button = document.getElementById('loveButton');
+            let width = 0;
+
+            // Disable button during animation
+            button.disabled = true;
+            button.style.opacity = '0.7';
+
+            // Love messages to display during loading
+            const loadingMessages = [
+                "Calculating the depth of my love...",
+                "Measuring the infinite moments with you...",
+                "Counting the stars in your eyes...",
+                "Quantifying countless happy memories..."
+            ];
+
+            // Final love details
+            const loveDetails = [
+                "💖 My heart beats 86,400 times a day, and each beat is for you",
+                "✨ Every star in the sky reminds me of your sparkle",
+                "🌸 Like flowers bloom in spring, my love grows each day",
+                "🎵 Every love song makes me think of you",
+                "💫 You're the dream I never want to wake up from"
+            ];
+
+            let messageIndex = 0;
+            const messageInterval = setInterval(() => {
+                message.textContent = loadingMessages[messageIndex];
+                message.classList.remove('hidden');
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+            }, 800);
+
+            // Create floating hearts
+            function createHeart() {
+                const heart = document.createElement('span');
+                heart.className = 'meter-heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                fill.querySelector('.floating-hearts-container').appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }
+
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    clearInterval(messageInterval);
+                    message.textContent = "My Love for You = ∞ 💖";
+                    
+                    // Display love details
+                    details.innerHTML = loveDetails.map(detail => 
+                        `<div class="love-detail-item">${detail}</div>`
+                    ).join('');
+                    details.classList.remove('hidden');
+                    
+                    // Re-enable button
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                    button.querySelector('.btn-text').textContent = "Measured with Love �";
+                } else {
+                    width++;
+                    fill.style.width = width + '%';
+                    percentage.textContent = width + '%';
+                    if (width % 5 === 0) createHeart();
+                }
+            }, 30);
+        }
+
+        // Initialize animations when page loads
+        window.addEventListener('load', () => {
+            animateTimeline();
+        });
+    </script>
+</body>
+</html>
